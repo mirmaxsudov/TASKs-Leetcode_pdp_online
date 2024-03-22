@@ -49,6 +49,46 @@ public class Main {
 
     }
 
+    public static final List<Integer> list = new ArrayList<>();
+
+    public static TreeNode increasingBST(TreeNode root) {
+        readValuesInTree(root);
+
+        Collections.sort(list);
+
+        TreeNode res = new TreeNode(list.get(0));
+        return generateTreeNode(list, 1, res);
+    }
+
+    private static TreeNode generateTreeNode(List<Integer> list, int index, TreeNode temp) {
+        if (index < list.size()) {
+            temp.right = new TreeNode(list.get(index));
+            temp = temp.right;
+            generateTreeNode(list, index + 1, temp);
+        } else {
+            return temp;
+        }
+
+        return temp;
+    }
+
+    private static void readValuesInTree(TreeNode root) {
+        if (root == null)
+            return;
+
+        list.add(root.val);
+
+        readValuesInTree(root.left);
+        readValuesInTree(root.right);
+    }
+
+    public static int countNodes(TreeNode root) {
+        if (root == null)
+            return 0;
+
+        return 1 + countNodes(root.left) + countNodes(root.right);
+    }
+
     public static ListNode addTwoNumbers2(ListNode l1, ListNode l2) {
         BigInteger sum1 = new BigInteger("0");
         BigInteger sum2 = new BigInteger("0");
