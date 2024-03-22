@@ -1,7 +1,5 @@
 package leetcode;
 
-import lombok.val;
-
 import java.math.BigInteger;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -48,12 +46,40 @@ public class Main {
     private static int count = 0;
 
     public static void main(String[] args) {
+
     }
 
     public static ListNode addTwoNumbers2(ListNode l1, ListNode l2) {
+        BigInteger sum1 = new BigInteger("0");
+        BigInteger sum2 = new BigInteger("0");
 
+        while (l1 != null) {
+            sum1 = sum1.add(BigInteger.valueOf(l1.val));
+            sum1 = sum1.multiply(BigInteger.valueOf(10));
+            l1 = l1.next;
+        }
 
-        return null;
+        sum1 = sum1.divide(BigInteger.valueOf(10));
+
+        while (l2 != null) {
+            sum2 = sum2.add(BigInteger.valueOf(l2.val));
+            sum2 = sum2.multiply(BigInteger.valueOf(10));
+            l2 = l2.next;
+        }
+
+        sum2 = sum2.divide(BigInteger.valueOf(10));
+
+        sum1 = sum1.add(sum2);
+
+        ListNode res = new ListNode(-1);
+        ListNode temp = res;
+
+        for (char c : sum1.toString().toCharArray()) {
+            temp.next = new ListNode(c - '0');
+            temp = temp.next;
+        }
+
+        return res.next;
     }
 
     public static boolean isSubPath(ListNode head, TreeNode root) {
