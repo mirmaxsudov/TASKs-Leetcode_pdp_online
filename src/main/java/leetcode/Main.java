@@ -1,5 +1,7 @@
 package leetcode;
 
+import kotlin.jvm.internal.markers.KMappedMarker;
+
 import java.math.BigInteger;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -48,6 +50,113 @@ public class Main {
     public static void main(String[] args) {
 
     }
+
+    public static void sortColors(int[] nums) {
+        Map<Integer, Integer> map = new HashMap<>();
+
+        for (int num : nums)
+            map.put(num, map.getOrDefault(num, 0) + 1);
+
+        for (int i = 0; i < nums.length; i++) {
+            int count = map.getOrDefault(0, 0);
+
+            if (count != 0) {
+                nums[i] = 0;
+                map.put(0, count - 1);
+                continue;
+            }
+
+            count = map.getOrDefault(1, 0);
+
+            if (count != 0) {
+                nums[i] = 1;
+                map.put(1, count - 1);
+                continue;
+            }
+
+            nums[i] = 2;
+            map.put(2, map.getOrDefault(2, 0) - 1);
+        }
+    }
+
+    public static ListNode rotateRight(ListNode head, int k) {
+        int length = nodeLength(head);
+
+        int swapCount = k % length;
+
+        ListNode next = head;
+        int firstCount = length - swapCount;
+
+        while (firstCount > 0) {
+            next = next.next;
+            firstCount--;
+        }
+
+        ListNode res = next;
+        ListNode temp = res;
+
+        while (temp.next != null)
+            temp = temp.next;
+
+        System.out.println(swapCount);
+
+        while (swapCount >= 0) {
+            temp.next = new ListNode(head.val);
+            temp = temp.next;
+            head = head.next;
+            swapCount--;
+        }
+
+        return res;
+    }
+
+    private static int nodeLength(ListNode head) {
+        if (head == null)
+            return 0;
+        return 1 + nodeLength(head.next);
+    }
+
+    public static void reorderList(ListNode head) {
+        ListNode head2 = head;
+
+        ListNode reverse = null;
+        int count = 0, length;
+        while (head2 != null) {
+            reverse = new ListNode(head2.val, reverse);
+            head2 = head2.next;
+            count++;
+        }
+        length = count;
+        count /= 2;
+
+        ListNode res = new ListNode(-1);
+        ListNode temp = res;
+
+        head2 = head;
+
+        for (int i = 0; i < count; i++) {
+            temp.next = new ListNode(head2.val);
+            temp = temp.next;
+            temp.next = new ListNode(reverse.val);
+            temp = temp.next;
+
+            head2 = head2.next;
+            reverse = reverse.next;
+        }
+
+        if ((length & 1) == 1)
+            temp.next = new ListNode(reverse.val);
+
+        res = res.next;
+        ListNode originHead = head;
+
+        while (res != null) {
+            originHead.val = res.val;
+            res = res.next;
+            originHead = originHead.next;
+        }
+    }
+
 
     public static final List<Integer> list = new ArrayList<>();
 
@@ -160,44 +269,6 @@ public class Main {
         }
 
         return resHead.next;
-    }
-
-    public static void reorderList(ListNode head) {
-        ListNode res = new ListNode(-1);
-        ListNode temp = res;
-
-        ListNode reverse = null;
-        ListNode headHead = head;
-        int count = 0;
-
-        while (headHead != null) {
-            reverse = new ListNode(headHead.val, reverse);
-            headHead = headHead.next;
-            count++;
-        }
-
-        ListNode inner = head;
-
-        for (int i = 0; i < count / 2; i++) {
-            temp.next = new ListNode(inner.val);
-            temp = temp.next;
-            temp.next = new ListNode(reverse.val);
-            temp = temp.next;
-
-            inner = inner.next;
-            reverse = reverse.next;
-        }
-
-        res = res.next;
-
-        head = new ListNode(-1);
-        ListNode headHead2 = head;
-
-        while (res != null) {
-            headHead2.next = new ListNode(res.val);
-            headHead2 = headHead2.next;
-            res = res.next;
-        }
     }
 
     public static ListNode deleteDuplicates(ListNode head) {
@@ -437,6 +508,7 @@ public class Main {
         }
         System.out.println();
     }
+
 
     public static ListNode reverseList2(ListNode head) {
         ListNode temp = null;
@@ -961,6 +1033,7 @@ public class Main {
     }
 
     class MyHashMap {
+
         private Map<Integer, Integer> map;
 
         public MyHashMap() {
@@ -978,9 +1051,11 @@ public class Main {
         public void remove(int key) {
             map.remove(key);
         }
+
     }
 
     class MyHashSet {
+
         private Set<Integer> set;
 
         public MyHashSet() {
@@ -998,46 +1073,7 @@ public class Main {
         public boolean contains(int key) {
             return set.contains(key);
         }
-    }
 
-    /**
-     * Your MyHashSet object will be instantiated and called as such:
-     * MyHashSet obj = new MyHashSet();
-     * obj.add(key);
-     * obj.remove(key);
-     * boolean param_3 = obj.contains(key);
-     */
-
-
-    public static ListNode rotateRight(ListNode head, int k) {
-        int length = getLength(head);
-
-        int swapCount;
-
-        if (length <= k)
-            swapCount = k % length;
-        else {
-            swapCount = k;
-        }
-
-        length = length - swapCount;
-        ListNode temp = head;
-
-        while (length > 0) {
-            temp = temp.next;
-            length--;
-        }
-
-        ListNode newHead = temp.next;
-        head = newHead;
-        temp = null;
-
-        while (newHead != null) {
-            newHead = newHead.next;
-        }
-        newHead = temp;
-
-        return head;
     }
 
     private static int getLength(ListNode head) {
