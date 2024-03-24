@@ -1,7 +1,5 @@
 package leetcode;
 
-import kotlin.jvm.internal.markers.KMappedMarker;
-
 import java.math.BigInteger;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -48,7 +46,143 @@ public class Main {
     private static int count = 0;
 
     public static void main(String[] args) {
+        System.out.println(myAtoi("  0000000000012345678"));
+        System.out.println(myAtoi("  -0012a42"));
+        System.out.println(myAtoi("  00000-42a1234 "));
+    }
 
+    public static int myAtoi(String s) {
+        s = s.trim();
+
+        boolean isFindDigit = false;
+        int firstIndex = -1;
+        StringBuilder collector = new StringBuilder();
+
+        for (int i = 0; i < s.toCharArray().length; i++) {
+            char current = s.charAt(i);
+            if (Character.isDigit(current)) {
+                if (current == '0')
+                    if (!isFindDigit)
+                        continue;
+
+                if (firstIndex == -1) {
+                    firstIndex = i;
+                }
+
+                collector.append(current);
+                isFindDigit = true;
+            } else {
+                if (isFindDigit) {
+                    break;
+                }
+            }
+        }
+
+        if (firstIndex != 0)
+            firstIndex--;
+
+        if (isFindDigit) {
+            StringBuilder sb = new StringBuilder();
+
+            for (int i = 0; i < collector.toString().length(); i++) {
+                if (collector.charAt(i) != 0) {
+                    sb.append(collector.substring(i));
+                    break;
+                }
+            }
+
+            int f = s.charAt(firstIndex) == '-' ? -1 : 1;
+
+            return new BigInteger(sb.toString()).multiply(BigInteger.valueOf(f)).intValue();
+        }
+
+        return -1;
+    }
+
+    public static void miniMaxSum(List<Integer> arr) {
+        long min = Long.MAX_VALUE, max = Long.MIN_VALUE;
+        long sum = 0;
+
+        for (int num : arr) {
+            sum += num;
+            min = Math.min(min, num);
+            max = Math.max(max, num);
+        }
+
+        System.out.println((sum - max) + " " + (sum - min));
+    }
+
+    public static void plusMinus(List<Integer> arr) {
+        int countPositive = 0, countNegative = 0, countZero = 0;
+
+        for (int num : arr) {
+            if (num > 0)
+                countPositive++;
+            else if (num < 0)
+                countNegative++;
+            else
+                countZero++;
+        }
+
+        int size = arr.size();
+
+        System.out.printf("%.6f%n", (double) countPositive / size);
+        System.out.printf("%.6f%n", (double) countNegative / size);
+        System.out.printf("%.6f%n", (double) countZero / size);
+    }
+
+    public static int diagonalDifference(List<List<Integer>> arr) {
+        int last = arr.size() - 1;
+        int first = 0, second = 0;
+
+        for (int i = 0; i < arr.size(); i++) {
+            first += arr.get(i).get(i);
+            second += arr.get(i).get(last--);
+        }
+
+        return Math.abs(first - second);
+    }
+
+    public static long aVeryBigSum(List<Long> ar) {
+        return ar.stream().mapToLong(x -> x).sum();
+    }
+
+
+    public static List<Integer> compareTriplets(List<Integer> a, List<Integer> b) {
+        int[] collector = new int[2];
+
+        for (int i = 0; i < a.size(); i++) {
+            int a1 = a.get(i);
+            int b1 = b.get(i);
+            if (a1 > b1)
+                collector[0]++;
+            else if (b1 > a1)
+                collector[1]++;
+        }
+
+        return List.of(collector[0], collector[1]);
+    }
+
+    public static int minimumCost(int[] nums) {
+        Arrays.sort(nums);
+
+
+        return -1;
+    }
+
+
+    public static int differenceOfSums(int n, int m) {
+        int firstSum = 0;
+        int secondSum = 0;
+
+        for (int i = 1; i <= n; i++) {
+            if (i % m == 0)
+                secondSum += i;
+            else
+                firstSum += i;
+        }
+
+        return Math.abs(secondSum - firstSum);
     }
 
     public static void sortColors(int[] nums) {
