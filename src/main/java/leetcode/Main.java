@@ -49,6 +49,14 @@ public class Main {
         for (int i = 0; i < 100000; i++)
             new Thread(Main::increaseOne).start();
 
+
+        System.out.println(count);
+        System.out.println(count);
+        System.out.println(count);
+        System.out.println(count);
+        System.out.println(count);
+        System.out.println(count);
+        System.out.println(count);
         System.out.println(count);
     }
 
