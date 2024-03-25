@@ -46,10 +46,54 @@ public class Main {
     private static int count = 0;
 
     public static void main(String[] args) {
-        System.out.println(myAtoi("  0000000000012345678"));
-        System.out.println(myAtoi("  -0012a42"));
-        System.out.println(myAtoi("  00000-42a1234 "));
+        for (int i = 0; i < 100000; i++)
+            new Thread(Main::increaseOne).start();
+
+        System.out.println(count);
     }
+
+    private synchronized static void increaseOne() {
+        count++;
+    }
+
+    public List<Integer> findDuplicates(int[] nums) {
+        boolean[] duplicates = new boolean[nums.length + 1];
+
+        List<Integer> res = new ArrayList<>();
+
+        for (int n : nums) {
+            if (duplicates[n] && !res.contains(n)) {
+                res.add(n);
+            }
+            duplicates[n] = true;
+        }
+
+        return res;
+    }
+
+    public static int[][] transpose(int[][] matrix) {
+        int[][] res = new int[matrix[0].length][matrix.length];
+
+        for (int i = 0; i < matrix.length; i++)
+            for (int j = 0; j < matrix[i].length; j++)
+                res[j][i] = matrix[i][j];
+
+        return res;
+    }
+
+    private static String reverse(String str) {
+
+        char[] charArray = str.toCharArray();
+
+        for (int i = 0; i < charArray.length / 2; i++) {
+            char temp = charArray[i];
+            charArray[i] = charArray[charArray.length - i - 1];
+            charArray[charArray.length - i - 1] = temp;
+        }
+
+        return new String(charArray);
+    }
+
 
     public static int myAtoi(String s) {
         s = s.trim();
@@ -60,6 +104,10 @@ public class Main {
 
         for (int i = 0; i < s.toCharArray().length; i++) {
             char current = s.charAt(i);
+
+            if (!isFindDigit && Character.isLetter(current))
+                return 0;
+
             if (Character.isDigit(current)) {
                 if (current == '0')
                     if (!isFindDigit)
@@ -77,6 +125,8 @@ public class Main {
                 }
             }
         }
+
+        System.out.println(collector);
 
         if (firstIndex != 0)
             firstIndex--;
