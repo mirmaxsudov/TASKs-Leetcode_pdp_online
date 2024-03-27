@@ -46,18 +46,23 @@ public class Main {
     private static int count = 0;
 
     public static void main(String[] args) {
-        for (int i = 0; i < 100000; i++)
-            new Thread(Main::increaseOne).start();
 
+    }
 
-        System.out.println(count);
-        System.out.println(count);
-        System.out.println(count);
-        System.out.println(count);
-        System.out.println(count);
-        System.out.println(count);
-        System.out.println(count);
-        System.out.println(count);
+    public int firstMissingPositive2(int[] nums) {
+        int target = 1;
+
+        Arrays.sort(nums);
+
+        for (int num : nums) {
+            if (num == target) {
+                target++;
+            } else if (num > target) {
+                return target;
+            }
+        }
+
+        return target;
     }
 
     private synchronized static void increaseOne() {
